@@ -54,6 +54,18 @@ Drag any `.logical` file onto `interpreter.py` and it will be run.
 
 you can also use `python interpreter.py <file_path> <options>`
 
+
+If you want to have a quick way to run on windows, you can create a batch file to run the interpreter
+
+```batchfile
+@echo off
+set installDirectory=C:/Your_Install_Directory
+C:/Windows/py.exe %installDirectory%/loglang/interpreter.py %1
+pause>nul
+```
+
+Then right click on a file type, select 'Open With..', select the batch file, and click 'Always'
+
 ---
 
 ## Limitations
