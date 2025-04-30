@@ -70,7 +70,7 @@ For Linux:
 ```bash
 #!/bin/bash
 
-installDirectory="$HOME/loglang" # Changed to a typical Linux installation directory
+installDirectory="$HOME/loglang"
 python3 "$installDirectory/interpreter.py" "$1"
 read -p "Press Enter to continue..."
 ```
