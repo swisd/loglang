@@ -66,6 +66,16 @@ pause>nul
 
 Then right click on a file type, select 'Open With..', select the batch file, and click 'Always'
 
+For Linux:
+```bash
+#!/bin/bash
+
+installDirectory="$HOME/loglang" # Changed to a typical Linux installation directory
+python3 "$installDirectory/interpreter.py" "$1"
+read -p "Press Enter to continue..."
+```
+
+
 ---
 
 ## Limitations
