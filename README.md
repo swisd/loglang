@@ -33,6 +33,7 @@ The simple logical language
       * [Returns](#returns)
     * [Classes](#classes)
     * [Type Definitions](#type-definitions)
+    * [Input Processing](#input-processing)
 <!-- TOC -->
 
 ---
@@ -42,6 +43,10 @@ The simple logical language
 ---
 
 ## Features
+
+Features of LogicLang include:
+
+* 
 
 ---
 
@@ -62,7 +67,8 @@ The simple logical language
 | Arrays Fully Working      |      IP       |                   8a30 |
 | Sets, Tuples, other types |      NS       |                   8a40 |
 | Multithreading, etc.      |      NS       |           10a or later |
-| Type Definitions          |      IP       |                   8a30 |
+| Type Definitions          |      IP       |           10a or later |
+| Input Processing          |      NS       |                   9a40 |
 
 *Not Started / In Progress / Completed
 
@@ -251,4 +257,11 @@ type array (matches *v *reg any "\w+ _ [0-9]" with any len)
 type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
 type tuple (matches (*, *) where * any with any len)
 type word (matches *reg \w+ with len equal 4)
+```
+
+### Input Processing
+
+```
+input <prompt>
+print variable result
 ```
