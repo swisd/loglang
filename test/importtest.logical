@@ -1,0 +1,8 @@
+name importtext
+using resource asm
+printext(teutwsefuys)
+__complex__(5)
+Math.add(10 5)
+print variable result
+Math.mul(10 5)
+print variable result

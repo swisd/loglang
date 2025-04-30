@@ -1,0 +1,4 @@
+name logdefs
+using resource func0
+using resource dntp
+using resource fntp

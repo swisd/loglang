@@ -1,0 +1,17 @@
+name mathtest
+*FILETYPE compound
+fclass Math {
+  function mul(a b) {
+    return param:a * param:b
+  }
+}
+function ifthen(a b){
+    if
+}
+
+general set variable x to 3
+general set variable y to 4
+print text Multiplying x and y:
+print variable result
+Math.mul(3 4)
+print variable result

@@ -1,0 +1,20 @@
+name test
+using resource asm
+*FILETYPE logic
+printext(teutwsefuys)
+__complex__(5)
+Math.add(10 5)
+print variable result
+Math.mul(10 5)
+print variable result
+
+
+array(testarray)
+general set variable testarray to !result!
+arrayWrite(!testarray! 1 datatext)
+
+arrayRead(!testarray! 0)
+print variable Value 0 of array testarray
+print variable result
+arrayRead(!testarray! 1)
+print variable result

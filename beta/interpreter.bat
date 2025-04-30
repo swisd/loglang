@@ -21,6 +21,35 @@ echo.
 echo.
 set start=%time%
 
+rem === PREPROCESS DSL DEFINITIONS ===
+rem capture all "int <name> def … / list /" lines into DSL_<name>
+for /f "usebackq tokens=1,2,3* delims= " %%A in ("%initialFile%") do (
+  if /I "%%A"=="int" if /I "%%C"=="def" (
+    set "ds_name=%%B"
+    rem grab everything between the first "/" and the next "/"
+    setlocal ENABLEDELAYEDEXPANSION
+    set "inList="
+    set "capture="
+    for %%V in (%%D) do (
+      if defined capture (
+        if "%%V"=="/" (
+          endlocal & set "DSL_!ds_name!=!inList!"
+        ) else (
+          set "inList=!inList!%%V "
+        )
+      ) else if "%%V"=="/" (
+        set "capture=1"
+      )
+    )
+  )
+)
+rem capture "type <t> (matches any in <DS>)"
+for /f "usebackq tokens=1,2,3,4,5 delims= ()" %%A in ("%initialFile%") do (
+  if /I "%%A"=="type" if /I "%%C"=="matches" (
+    set "TYPE_%%B=%%E"
+  )
+)
+
 :interpret
 FOR /F "tokens=* delims=" %%x in ('type %1') DO (
     set data=%%x
@@ -54,8 +83,61 @@ FOR /F "tokens=* delims=" %%x in ('type %1') DO (
         set /a currentLine+=1
         set /a loopid=!currentLine! + !rtid!
         set known=0
-        rem echo !currentLine!
 
+        rem ──────────────────────────────
+        rem SKIP all of our DSL‐declaration lines
+        rem anything that begins with "*" (like *FILETYPE)
+        if "!arg1:~0,1!"=="*" (
+            set known=1
+        )
+        
+        rem skip "int", "type" & "fclass" declarations
+        if /I "!arg1!"=="int"    set known=1
+        if /I "!arg1!"=="type"   set known=1
+        if /I "!arg1!"=="fclass" set known=1
+        
+        rem skip entire function bodies
+        if /I "!arg1!"=="function" (
+            set skipBlock=1
+            set known=1
+        )
+        if defined skipBlock (
+            rem exit skip mode when we see a lone "}"
+            if /I "!arg1!"=="}" set skipBlock=
+            set known=1
+        )
+        
+        if "!known!"=="1" (
+            rem we already “handled” (i.e. skipped) this line
+            goto :afterLogic
+        )
+        
+        rem ──────────────────────────────
+        :afterLogic
+
+
+        rem echo !currentLine!
+        rem —————————————————————————————
+        rem  Was this line a call to a captured function?
+        if exist "%~dp0func_!arg1!.dsl" (
+          rem push current context
+          set "fileStack[%stack_level%]=!file!"
+          set "lineStack[%stack_level%]=!currentLine!"
+          set /a stack_level+=1
+
+          rem map DSL parameters into %param:…% vars
+          for /L %%i in (2,1,26) do (
+            if defined arg%%i (
+              set "param%%i=!arg%%i!"
+            )
+          )
+
+          rem jump into the function’s file
+          set "file=%~dp0func_!arg1!.dsl"
+          set known=1
+          rem reset currentLine so that the outer FOR/F calls the new file from its top
+          set /a currentLine=0
+        )
 
         rem Logic
 
@@ -194,6 +276,32 @@ FOR /F "tokens=* delims=" %%x in ('type %1') DO (
                    rem goto endfile
                )
             )
+        )
+        if /I "!arg1!"=="return" (
+          rem grab the return-value
+          set "retVal=!arg2!"
+          rem pop stack
+          set /a stack_level-=1
+          set "file=!fileStack[%stack_level%]!"
+          set /a currentLine=!lineStack[%stack_level%]!
+          set known=1
+        )
+        rem —————————————————————————————
+        rem  Detect start of a DSL function
+        if /I "!arg1!"=="function" (
+          set "fnName=!arg2!"
+          rem create a temp file for this function
+          set "fnFile=%~dp0func_!fnName!.dsl"
+          >"%fnFile%" echo :: %data%
+          rem now read subsequent lines until a lone "}" appears
+          setlocal disableDelayedExpansion
+          for /f "usebackq delims=" %%L in ('more +!currentLine! "%initialFile%"') do (
+            echo %%L>>"%fnFile%"
+            echo %%L|findstr /R /X "}" >nul && goto :_fnDone
+          )
+          :_fnDone
+          endlocal
+          set known=1
         )
         if /I "!known!" EQU "0" (
             call :errordisplay "CRITICAL" , "!arg1! not available (DVAR_UNKNOWN)"

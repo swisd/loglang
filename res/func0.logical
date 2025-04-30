@@ -1,0 +1,11 @@
+name func0
+using fntp
+
+string set variable pth0 to !SystemDrive!
+string set variable prc_arc to !PROCESSOR_ARCHITECTURE!
+string set variable prc_lvl to !PROCESSOR_LEVEL!
+string set variable prc_rev to !PROCESSOR_REVISION!
+general set variable prc_cor to !NUMBER_OF_PROCESSORS!
+string set variable op_sys to !OS!
+string set variable cname to !COMPUTERNAME!
+string set variable cspec to !ComSpec!
