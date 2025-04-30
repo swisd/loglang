@@ -21,12 +21,16 @@ The simple logical language
   * [Screenshots](#screenshots)
   * [Syntax](#syntax)
     * [Environment](#environment)
+    * [Comments](#comments)
     * [Printing and Variables](#printing-and-variables)
       * [Other set types](#other-set-types)
     * [Comparisons](#comparisons)
     * [If statements](#if-statements)
     * [For loops](#for-loops)
     * [Functions](#functions)
+      * [Definition](#definition)
+      * [Argument Access](#argument-access)
+      * [Returns](#returns)
     * [Classes](#classes)
     * [Type Definitions](#type-definitions)
 <!-- TOC -->
@@ -54,7 +58,7 @@ The simple logical language
 | Item                      | NS / IP / C * | Planned Release Update |
 |:--------------------------|:-------------:|-----------------------:|
 | Functions and Classes     |       C       |                   8a20 |
-| Advanced Funcitions       |      IP       |                   9a10 |
+| Advanced Functions        |      IP       |                   9a10 |
 | Arrays Fully Working      |      IP       |                   8a30 |
 | Sets, Tuples, other types |      NS       |                   8a40 |
 | Multithreading, etc.      |      NS       |           10a or later |
@@ -98,6 +102,14 @@ name hello_world
 *FILETYPE logic
 ```
 
+### Comments
+
+You can write a comment by using comment at the end or beginning of a line
+
+`
+comment This is a comment
+`
+
 ### Printing and Variables
 
 IF you want to print, you can use `print text`
@@ -139,12 +151,104 @@ Algebraic set is used to resolve an equation to set a variable
 
 ### Comparisons
 
+Comparisons can be used to execute locigal operations, such as and, or, not
+
+```
+logical compare with output result as the and of !a! !b!
+print variable result
+```
+
 ### If statements
 
+You can use if statements to make a comparison, and the format is pretty simple
+
+`if variable a is (greater|less|equal) than variable a then ...`
+
 ### For loops
+For loops are similar to loops in other languages
+
+`for i from 1 to 10 then ...`
+
+There is also an option to loop from am array
+
+`for item in list then ...`
 
 ### Functions
 
+Functions are where it starts to get complicated.
+* **Functions are ONLY available in compound mode**
+
+#### Definition
+To define a function, you type:
+`function HelloWorld(argument text){}`
+Arguments are seperated by spaces, so be careful when naming them.
+The body of the function will be inside the curly brackets `{}`
+
+#### Argument Access
+
+To get the value of an argument of a function from inside
+a function, you must use `param:` before the variable name.
+
+```
+function printext(data) {
+    print text param:data
+}
+```
+
+#### Returns
+
+To return a value from a function, use `return`, and to acess it,
+use `!result!` immediately after the function execution.
+
+```
+function add(a b) {
+    return param:a + param:b
+}
+add(10 5)
+print variable result
+```
+
 ### Classes
 
+Classes are very simple and can be declared by using `fclass`
+To call a function from a class, use `class.function()`
+
+```
+fclass Math {
+    function add(a b) {
+        return param:a + param:b
+    }
+    function sub(a b) {
+        return param:a - param:b
+    }
+    function mul(a b) {
+        return param:a * param:b
+    }
+    function div(a b) {
+        return param:a / param:b
+    }
+}
+
+Math.add(10 5)
+print variable result
+Math.mul(10 5)
+print variable result
+```
+
 ### Type Definitions
+
+Type definitions are not complete yet and are very complicated
+
+The currently is not much documentation on this topic and it is in progress.
+Here is a sample to show you what they currently loook like, which will most likely be final.
+```
+comment Type definitions
+type hex (matches any in hexbytes with any len)
+type text (matches any in textbytes with any len)
+type integer (matches 0..9 with len greater equal 1)
+type refdict (matches r[*][*], z[*][*] as series with any len)
+type array (matches *v *reg any "\w+ _ [0-9]" with any len)
+type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
+type tuple (matches (*, *) where * any with any len)
+type word (matches *reg \w+ with len equal 4)
+```
