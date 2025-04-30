@@ -3,7 +3,7 @@ import sys
 import os
 import platform
 from printmods import fprint, fprint_s, Fore
-__version__ = '8a24c1'
+__version__ = '8a24c3'
 __compat__ = '12w5'
 print(f"Running on {platform.system()} {platform.release()} {platform.version()}")
 print(f"Interpreter Version {__version__}-SP{__compat__}")
@@ -50,6 +50,13 @@ class LogicInterpreter(BaseInterpreter):
             self.filetype = ft.strip()
             fprint(self.filetype, "MODE", Fore.BLUE)
             return
+
+        if s.startswith('*uVERSION'):
+            ft = (s.split(" "))[1]
+            print(ft)
+            if (ft.split("a"))[0] > (__version__.split("a"))[0]:
+                raise RuntimeError(f"{Fore.RED}This file is not supported because it uses a newer version of LogicLang and therefore requires a compatible interpreter.\n"
+                                   f" Please upgrade the interpreter to the newest version to resolve this error.\n{Fore.YELLOW} Interpreter Version: {Fore.RED}{__version__}{Fore.YELLOW}    File Version: {ft}")
 
         # Pre-expand parameters and variables in the line
         s = self.expand_vars(s)
@@ -230,6 +237,26 @@ class CompoundInterpreter(BaseInterpreter):
                 _, self.filetype = line.split(maxsplit=1)
                 self.filetype = self.filetype.strip()
                 continue
+            if line.startswith('*uVERSION'):
+                ft = (line.split(" "))[1]
+                print(f"file-declared version {ft}")
+                update = (ft.split("a"))[1]
+                version2 = (__version__.split("a"))[1]
+                if (ft.split("a"))[0] > (__version__.split("a"))[0]:
+                    raise RuntimeError(
+                        f"\n{Fore.RED}This file is not supported because it uses a newer version of \nLogicLang and therefore requires a compatible interpreter.\n"
+                        f"Please upgrade the interpreter to the newest version to resolve this error.\n{Fore.WHITE}Details:\n{Fore.YELLOW}Interpreter Version: {Fore.RED}{__version__}{Fore.YELLOW}    File Version: {ft}")
+                if (update.split("c"))[0] > (version2.split("c"))[0]:
+                    fprint(
+                        f"This file might have errors due to it using a later minor update.\n"
+                        f"You do not have to update your interpreter, but there might be significant code function issues.\n"
+                    , "WARNING", Fore.YELLOW)
+                    keythrough = input("Continue? (Y/N)")
+                    if keythrough.lower() == "y":
+                        continue
+                    else:
+                        sys.exit(-255)
+
             if line.startswith('using resource'):
                 continue
             m = re.match(r'int\s+(\w+)\s+def.*?/([^/]+)/', line)
@@ -318,6 +345,8 @@ def main():
                 lines.extend(rf.readlines())
         else:
             lines.append(raw)
+
+
     mode = None
     for l in lines:
         if l.strip().startswith('*FILETYPE'):

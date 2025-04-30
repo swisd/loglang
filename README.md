@@ -44,13 +44,15 @@ The simple logical language
 
 ## Features
 
-Features of LogicLang include:
-
-* 
-
 ---
 
 ## Setup
+
+You must have Python 3.9.0 or later installed. (Python 3.12 recommended)
+
+Drag any `.logical` file onto `interpreter.py` and it will be run.
+
+you can also use `python interpreter.py <file_path> <options>`
 
 ---
 
@@ -265,3 +267,4 @@ type word (matches *reg \w+ with len equal 4)
 input <prompt>
 print variable result
 ```
+**This does not work yet**

@@ -3,6 +3,8 @@ name asm
 *FILETYPE compound
 comment disable dump, cache enable, xclear enable, fnlock disable, recursive enable
 *CONFIG d0 c1 x1 f0 r1
+
+comment minimum version required
 *uVERSION 8a30c3
 
 print text - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
