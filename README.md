@@ -20,6 +20,15 @@ The simple logical language
   * [Planned Updates](#planned-updates)
   * [Screenshots](#screenshots)
   * [Syntax](#syntax)
+    * [Environment](#environment)
+    * [Printing and Variables](#printing-and-variables)
+      * [Other set types](#other-set-types)
+    * [Comparisons](#comparisons)
+    * [If statements](#if-statements)
+    * [For loops](#for-loops)
+    * [Functions](#functions)
+    * [Classes](#classes)
+    * [Type Definitions](#type-definitions)
 <!-- TOC -->
 
 ---
@@ -49,7 +58,7 @@ The simple logical language
 | Arrays Fully Working      |      IP       |                   8a30 |
 | Sets, Tuples, other types |      NS       |                   8a40 |
 | Multithreading, etc.      |      NS       |           10a or later |
-
+| Type Definitions          |      IP       |                   8a30 |
 
 *Not Started / In Progress / Completed
 
@@ -110,3 +119,32 @@ general set variable a to 10
 general set variable b to !a!
 print variable b
 ```
+
+#### Other set types
+
+there are other set types for other applications that include:
+* `logical set`
+* `algebraic set`
+
+
+Logical set is used to set a variable to a boolean value:
+
+`logical set variable selected to true`
+
+
+Algebraic set is used to resolve an equation to set a variable
+
+`algebraic set variable result to 2 * x + y - 3`
+
+
+### Comparisons
+
+### If statements
+
+### For loops
+
+### Functions
+
+### Classes
+
+### Type Definitions
