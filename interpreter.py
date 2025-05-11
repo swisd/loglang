@@ -5,14 +5,17 @@ import platform
 from printmods import fprint, Fore
 import printmods
 import math
-import cpuinfo
+try:
+    import cpuinfo
+
+    for key, item in cpuinfo.get_cpu_info().items():
+        if key == "brand_raw":
+            cpudata = item
+except:
+    cpudata = "No Module 'py-cpuinfo'"
 __version__ = '8a32c0'
 __compat__ = '12w5-pre'
 from logdata import bytes_to_custom_pairs
-
-for key, item in cpuinfo.get_cpu_info().items():
-    if key == "brand_raw":
-        cpudata = item
 
 print(f"Running on {Fore.CYAN}{platform.system()} {platform.release()} {Fore.YELLOW}{platform.version()}{Fore.RESET} // {Fore.GREEN}{platform.machine()}{Fore.RESET} ({Fore.BLUE}{platform.node()}{Fore.RESET}) // \n{cpudata} ")
 print(f"Interpreter Version {__version__}-SP{__compat__}")
