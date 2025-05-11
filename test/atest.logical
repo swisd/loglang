@@ -1,0 +1,9 @@
+using resource asm
+*FILETYPE compound
+call array(testarray)
+call arrayWrite(testarray 0 Hello)
+call arrayWrite(testarray 1 World)
+general set variable result to Array.arrayRead(testarray 0)
+print variable result
+general set variable result to Array.arrayRead(testarray 1)
+print variable result

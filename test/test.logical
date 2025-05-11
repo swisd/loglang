@@ -1,7 +1,7 @@
 name test
 using resource asm
 *FILETYPE logic
-printext(teutwsefuys)
+printext(hereIsSomeText)
 __complex__(5)
 Math.add(10 5)
 print variable result
@@ -9,12 +9,17 @@ Math.mul(10 5)
 print variable result
 
 
-array(testarray)
-general set variable testarray to !result!
-arrayWrite(!testarray! 1 datatext)
-
-arrayRead(!testarray! 0)
-print variable Value 0 of array testarray
+Array.array(testarray)
+Array.arrayWrite(testarray 1 "datatext")
+print text - - -
+general set variable result to Array.arrayRead(testarray 0)
+print text Value 0 of array testarray
 print variable result
-arrayRead(!testarray! 1)
+print text - - -
+general set variable result to Array.arrayRead(testarray 1)
+print text Value 1 of array testarray
 print variable result
+print text - - -
+py(print("hello"))
+cpu._flags.stflag(func0 true)
+comment wterm.cmd(cls)

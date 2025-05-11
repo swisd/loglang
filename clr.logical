@@ -1,0 +1,4 @@
+name clr
+*FILETYPE compound
+*CONFIG d0
+print text .0

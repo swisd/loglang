@@ -1,0 +1,7 @@
+*FILETYPE compound
+general set variable myArr[0] to 10
+general set variable myArr[2] to 30
+print text The array is:
+print text Element 0: !myArr[0]!
+print text Element 1 (unset): !myArr[1]!  # Should be blank or None
+print text Element 2: !myArr[2]!

@@ -1,0 +1,19 @@
+name math
+using resource asm
+*FILETYPE compound
+
+general set variable e to 2.718281828459045
+general set variable inf to inf
+general set variable nan to nan
+general set variable pi to 3.141592653589793
+general set variable tau to 6.283185307179586
+general set variable zero to 0
+
+designate e as type float
+designate pi as type float
+designate tau as type float
+designate inf as type float
+
+
+general set variable _T to TypeVar(_T)
+general set variable _T_co to TypeVar(_T_co)
