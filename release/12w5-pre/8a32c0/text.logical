@@ -1,0 +1,49 @@
+name text
+using resource func0
+*FILETYPE logic
+comment print variable pth0
+comment General Set and Get test
+general set variable a to 10
+print text Value Of Variable 'a' after being Set:
+print variable a
+
+comment You can also set it to the value of a variable
+print text .
+print text Value of Variable 'b' after being Set To
+print text the Value of Variable 'a' :
+general set variable b to !a!
+print variable b
+
+comment and use algebraic
+print text .
+print text Value of var c:
+algebraic set variable c to a + b * 2 / a
+print variable c
+
+comment Setting a logical var
+print text .
+print text Logical vars d,e,f
+logical set variable d to true
+logical set variable e to true
+logical set variable f to false
+print text .
+logical compare with output g as the and of !d! !e!
+logical compare with output h as the or of !f! !g!
+logical compare with output i as the not of !h!
+print variable d
+print variable e
+print variable f
+print text .
+print text And Of d And e
+print variable g
+print text .
+print text Or Of f And g
+print variable h
+print text .
+print text Not Of Previous Result (h)
+print variable i
+print text .
+general set variable a to 15
+if variable !a! is greater than variable !b! then algebraic set variable z to a + b
+print variable z
+
