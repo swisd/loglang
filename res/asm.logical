@@ -7,6 +7,11 @@ comment disable dump, cache enable, xclear enable, fnlock disable, recursive ena
 comment minimum version required
 *uVERSION 8a30c3
 
+
+displayrule errors disable
+displayrule unknowns disable
+displayrule prints disable
+
 print text - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 general set variable rtid to py:rtid
@@ -19,7 +24,7 @@ int hexbytes def *n type *16 bytes / 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0
 int textbytes def *t type *tex chars /  	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ /
 
 int logwords def *t type *tex chars / nul set print def *t *c *n *16 *tex chars any type hex integer in matches = + - * |/ |\ |" |' for ref in equal greater less not or and until end both delta with param len *r var |newlin function global local ( ) [ ] { } 0 1 2 3 4 5 6 7 8 9 < > ; : ? ! @ # $ % ^ & * ~ ` fclass return raise .. /
-int loghexcompbytes def *t type *tex chars / 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F/
+int loghexcompbytes def *t type *16 bytes / 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F/
 
 comment Type definitions
 type hex (matches any in hexbytes with any len)
@@ -60,7 +65,7 @@ fclass returns {
     }
 
     function pySetComputed(varname data) {
-        py:self.vars[param:varname]=param:data
+        py:vars[param:varname]=param:data
     }
 }
 
@@ -89,6 +94,24 @@ fclass Math {
     }
     function div(a b) {
         return param:a / param:b
+    }
+}
+
+fclass wterm {
+    function cmd0(x) {
+        py:os.system("param:x")
+    }
+    function cmd1(x y) {
+        Error.SystemError(InternalError)
+        py:os.system("param:x param:y")
+    }
+    function cmd2(x y z) {
+        Error.SystemError(InternalError)
+        py:os.system("param:x param:y param:z")
+    }
+    function cmd3(x y z a) {
+        Error.SystemError(InternalError)
+        py:os.system("param:x param:y param:z param:a")
     }
 }
 
@@ -124,10 +147,33 @@ fclass flags {
         algebraic set variable fmtout to "!flaglist[param:id]!" + "[" + "!flags[param:id]!" + "]"
         return fmtout
     }
+    function isolated() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function debug() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function inspect() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function hash() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 }
 
 fclass disk {
-    function seek(f x cylinder sector track platter r2 vel) {}
+    function seek(f x cylinder sector track platter r2 vel) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+}
+
+fclass reset {
+    function var(name) {
+        Error.error(Incorrrect)
+        return None
+        general set variable compared to line
+        if param:name is equal than !compared! then py:linecount=0
+    }
 }
 
 fclass Error {
@@ -249,35 +295,74 @@ fclass Warning {
 
 
 fclass comp {
-    function node() {}
+    function node() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
     function uNode() {
         comment Unified node
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
     }
 }
 
 fclass system {
-    function mode() {}
-    function ino() {}
-    function dev() {}
-    function nlink() {}
-    function uid() {}
-    function gid() {}
-    function size() {}
-    function atime() {}
-    function mtime() {}
-    function blocks() {}
-    function blksize() {}
-    function rdev() {}
+    function mode() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function ino() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function dev() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function nlink() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function uid() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function gid() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function size() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function atime() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function mtime() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function blocks() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function blksize() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function rdev() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 }
 
 fclass fs {
-    function open(path flags mode f) {}
-    function pipe(i o) {}
-    function read(f length) {}
-    function close(f) {}
-    function dev_encoding(f) {}
+    function open(path flags mode f) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function pipe(i o) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function read(f length) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function close(f) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function dev_encoding(f) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
     function fdopen(f mode buf enc err nl cl opn)
-    function write(f data) {}
+    function write(f data) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
     function access(path mode f eff_id sym_f)
     function seek(f position whence)
 }
@@ -285,141 +370,328 @@ fclass fs {
 fclass cpu {
     function init() {
         general set variable flags to TypeVar(_flags)
-        general set _options[0] to nul
+        general set variable _options[0] to nul
     }
     fclass _flags {
         function stflag(flag data) {
             print text set flag 'param:flag' to 'param:data'
         }
-        function gtflag(flag) {}
-        function debug() {}
-        function inspect() {}
-        function interactive() {}
-        function optimize() {}
-        function ignore_env() {}
-        function verbose() {}
-        function bytes_warning() {}
-        function quiet() {}
-        function hash_randomization() {}
-        function isolated() {}
-        function dev_mode() {}
-        function utf8_mode() {}
+        function gtflag(flag) {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function debug() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function inspect() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function interactive() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function optimize() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function ignore_env() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function verbose() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function bytes_warning() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function quiet() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function hash_randomization() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function isolated() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function dev_mode() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function utf8_mode() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
     fclass _float {
-        function max() {}
-        function max_exp() {}
-        function max_10_exp() {}
-        function min() {}
-        function min_exp() {}
-        function min_10_exp() {}
-        function dig() {}
-        function mant_dig() {}
-        function epsilon() {}
-        function radix() {}
-        function rounds() {}
+        function max() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function max_exp() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function max_10_exp() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function min() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function min_exp() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function min_10_exp() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function dig() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function mant_dig() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function epsilon() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function radix() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function rounds() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
     fclass _hash {
-        function width() {}
-        function modulus() {}
-        function inf() {}
-        function nan() {}
-        function imag() {}
-        function algorithm() {}
-        function hash_bits() {}
-        function seed_bits() {}
-        function cutoff() {}
+        function width() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function modulus() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function inf() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function nan() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function imag() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function algorithm() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function hash_bits() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function seed_bits() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function cutoff() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
     fclass _int {
-        function bits_per_digit() {}
-        function sizeof_digit() {}
-        function default_max_str_digits() {}
-        function str_digits_check_threshold() {}
+        function bits_per_digit() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function sizeof_digit() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function default_max_str_digits() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function str_digits_check_threshold() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
     fclass _thread {
-        function name() {}
-        function lock() {}
+        function name() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function lock() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
         function version
     }
     fclass _version {
-        function major() {}
-        function minor() {}
-        function micro() {}
-        function releaselevel() {}
-        function serial() {}
+        function major() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function minor() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function micro() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function releaselevel() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function serial() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
-    function call_tracing(func args) {}
-    function exit(status) {}
-    function getfsencoding() {}
-    function getfscde() {}
-    function getrefcount(object) {}
-    function getrecursionlimit() {}
-    function getsizeof(obj) {}
-    function getswitchinterval() {}
-    function getprofile() {}
-    function setprofile(function) {}
-    function gettrace() {}
-    function settrace(function) {}
+    function call_tracing(func args) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function exit(status) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getfsencoding() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getfscde() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getrefcount(object) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getrecursionlimit() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getsizeof(obj) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getswitchinterval() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getprofile() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function setprofile(function) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function gettrace() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function settrace(function) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
     fclass _WinVer {
-        function major() {}
-        function minor() {}
-        function build() {}
-        function platform() {}
-        function service_pack() {}
-        function service_pack_minor() {}
-        function service_pack_major() {}
-        function suite_mask() {}
-        function product_type() {}
-        function platform_version() {}
+        function major() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function minor() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function build() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function platform() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function service_pack() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function service_pack_minor() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function service_pack_major() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function suite_mask() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function product_type() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function platform_version() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
-    function getwindowsversion() {}
-    function intern(string) {}
-    function is_finalizing() {}
-    function breakpointhook(args kwargs) {}
-    function setdlopenflags(flags) {}
-    function setrecursionlimit(limit) {}
-    function setswitchinterval(interval) {}
-    function gettotalrefcount() {}
-    function getcheckinterval() {}
-    function setcheckinterval(n) {}
-    function callstats() {}
-    function unraisablehook(unraisable) {}
-    function addaudithook(hook) {}
-    function audit(event args) {}
+    function getwindowsversion() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function intern(string) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function is_finalizing() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function breakpointhook(args kwargs) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function setdlopenflags(flags) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function setrecursionlimit(limit) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function setswitchinterval(interval) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function gettotalrefcount() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getcheckinterval() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function setcheckinterval(n) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function callstats() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function unraisablehook(unraisable) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function addaudithook(hook) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function audit(event args) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
     fclass _asyncgen_hooks {
-        function firstiter() {}
-        function finalizer() {}
+        function firstiter() {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
+        function finalizer() {
+             Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
-    function get_asyncgen_hooks() {}
-    function set_asyncgen_hooks(firtsiter finlizer) {}
-    function _enablelegacywindowsfsencoding() {}
-    function get_coroutine_origin_tracking_depth() {}
-    function set_coroutine_origin_tracking_depth(depth) {}
-    function set_int_max_str_digits(maxdigits) {}
-    function get_int_max_str_digits() {}
-    function getunicodeinternedsize(* _only) {}
-    function deactivate_stack_trampoline() {}
-    function stack_trampoline_active() {}
-    function activate_stack_trampoline(backend) {}
+    function get_asyncgen_hooks() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function set_asyncgen_hooks(firtsiter finlizer) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function _enablelegacywindowsfsencoding() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function get_coroutine_origin_tracking_depth() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function set_coroutine_origin_tracking_depth(depth) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function set_int_max_str_digits(maxdigits) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function get_int_max_str_digits() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function getunicodeinternedsize(* _only) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function deactivate_stack_trampoline() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function stack_trampoline_active() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
+    function activate_stack_trampoline(backend) {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
     fclass _dsk {
-        function seek(f x cylinder sector track platter r2 vel) {}
+        function seek(f x cylinder sector track platter r2 vel) {
+            Error.NotImplementedError(FunctionIsNotYetImplemented)
+        }
     }
 
 }
 
 
-fclass wterm {
-    function cmd(x) {
-        py:os.system("param:x")
-    }
+function IOControl() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
 }
 
+function keyTrack() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function IOControl() {}
-
-function keyTrack() {}
-
-function trace() {}
+function trace() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
 
 comment Array operations builtin
@@ -434,7 +706,7 @@ fclass Array {
     }
 
     function arrayRead(arr index) {
-        return PyOp.PyGetArr(param:arr param:index)
+        return !param:arr[param:index]!
     }
 
     function compArrayRead(arr index) {
@@ -491,15 +763,23 @@ function _arrayRShift(array){
     }
 }
 
-function barrier() {}
+function barrier() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function lock() {}
+function lock() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function manager() {}
+function manager() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
 function pipe() {
 
-function pool() {}
+function pool() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
 function queue(qname op data loc) {
     if param:op equal "n" { Array.array(param:qname) }
@@ -515,52 +795,94 @@ function stack(id op data) {
     if param:op equal 1 { return Array.arrayRead(!name! 0) then arrayRShift(!name!) }
 }
 
-function fileOpen(path mode) {}
+function fileOpen(path mode) {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function fileRead(fileOpenObj) {}
+function fileRead(fileOpenObj) {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function fileWrite(fileOpenObj) {}
+function fileWrite(fileOpenObj) {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function __init__() {}
+function __init__() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
-function __call__() {}
+function __call__() {
+    Error.NotImplementedError(FunctionIsNotYetImplemented)
+}
 
 function __complex__(number) {
     Error.error(NotImplemented)
 }
 
 fclass memory {
-    function format() {}
+    function format() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function contiguous() {}
+    function contiguous() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function itemsize() {}
+    function itemsize() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function nbytes() {}
+    function nbytes() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function ndim() {}
+    function ndim() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function obj() {}
+    function obj() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function readonly() {}
+    function readonly() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function shape() {}
+    function shape() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function strides() {}
+    function strides() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function suboffsets() {}
+    function suboffsets() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function cast() {}
+    function cast() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function hexadec(){}
+    function hexadec(){
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function release() {}
+    function release() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function tobytes() {}
+    function tobytes() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function toarray() {}
+    function toarray() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
-    function toreadonly() {}
+    function toreadonly() {
+        Error.NotImplementedError(FunctionIsNotYetImplemented)
+    }
 
 }
 
@@ -607,8 +929,9 @@ fclass base {
 
 print text - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print text .
-print variable rtid
 base.init()
+wterm.cmd0(cls) comment clear screen
+print text rtid: !rtid!
 py:printmods.fprint("compile_complete","info",printmods.Fore.CYAN)
 print text .
 print text ASM Compile and Builtin Module (.logical)
@@ -618,7 +941,10 @@ print text      using resource asm
 print text              OR
 print text     using package res.asm
 print text .
-algebraic set variable linecount to 3 + py:linecount
+algebraic set variable linecount to 5 + py:linecount
 print text prog start lin !linecount!
 print text \/\/\/\/\/\/\/\/\/\/\/\/    exec    \/\/\/\/\/\/\/\/\/\/\/\/
+displayrule errors enable
+displayrule unknowns enable
 print text .
+py:linecount=0

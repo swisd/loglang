@@ -2,9 +2,13 @@ import re
 import sys
 import os
 import platform
+
+from sympy.strategies import condition
+
 from printmods import fprint, Fore
 import printmods
 import math
+import psutil
 try:
     import cpuinfo
 
@@ -16,8 +20,12 @@ except:
 __version__ = '8a32c0'
 __compat__ = '12w5-pre'
 from logdata import bytes_to_custom_pairs
-
-print(f"Running on {Fore.CYAN}{platform.system()} {platform.release()} {Fore.YELLOW}{platform.version()}{Fore.RESET} // {Fore.GREEN}{platform.machine()}{Fore.RESET} ({Fore.BLUE}{platform.node()}{Fore.RESET}) // \n{cpudata} ")
+errors = True
+unknowns = True
+os.system('')
+print(f"Running on {Fore.CYAN}{platform.system()} {platform.release()} {Fore.YELLOW}{platform.version()}{Fore.RESET} // {Fore.GREEN}{platform.machine()}{Fore.RESET} ({Fore.BLUE}{platform.node()}{Fore.RESET}) // "
+      f"\n{cpudata} \n"
+      f"RAM: {round((psutil.virtual_memory().total)/1000000)} MB")
 print(f"Interpreter Version {__version__}-SP{__compat__}")
 if platform.system() == "Windows":
     os.system('')  # Enables ANSI escape codes
@@ -70,7 +78,8 @@ class BaseInterpreter:
                 exec(code, {}, self.python_context)
                 return None
             except Exception as e:
-                fprint(f"Python error in py: {e}", "ERROR", Fore.RED)
+                if errors:
+                    fprint(f"Python error in py: {e}", "ERROR", Fore.RED)
                 return None
 
     def run(self, lines):
@@ -94,10 +103,12 @@ class LogicInterpreter(BaseInterpreter):
             "vars": self.vars,
             "sys": sys,
             "os": os,
-            "printmods": printmods
+            "printmods": printmods,
+            "util": psutil
         }
         self.python_context["linecount"] = self.linecount
         self.python_context["py"] = self.eval_python  # Register py function globally
+
     def py(self, code):
         return self.eval_python(code)
 
@@ -114,7 +125,8 @@ class LogicInterpreter(BaseInterpreter):
                 text
             )
         except Exception as e:
-            fprint(f"Algebraic set eval error: {e}", "WARNING", Fore.YELLOW)
+            if errors:
+                fprint(f"Algebraic set eval error: {e}", "WARNING", Fore.YELLOW)
         text = re.sub(r'!py:(.+?)!', lambda m: str(self.eval_python(m.group(1))), text)
         # Handle parameters
         text = re.sub(r'param:(\w+)', lambda m: str(self.current_params.get(m.group(1), '')), text)
@@ -256,7 +268,8 @@ class LogicInterpreter(BaseInterpreter):
                     try:
                         val = expanded
                     except Exception as e:
-                        fprint(f"Error evaluating return: {e}", "ERROR", Fore.RED)
+                        if errors:
+                            fprint(f"Error evaluating return: {e}", "ERROR", Fore.RED)
 
             raise ReturnSignal(val)
 
@@ -315,12 +328,14 @@ class LogicInterpreter(BaseInterpreter):
                     try:
                         self.vars[var] = eval(expr, {}, self.vars)
                     except Exception as e:
-                        fprint(f"evaluating '{expr}': {e}", "ERROR", Fore.RED)
+                        if errors:
+                            fprint(f"evaluating '{expr}': {e}", "ERROR", Fore.RED)
                         return
             try:
                 self.vars[var] = val
             except Exception as e:
-                fprint(e, "ERROR", Fore.RED)
+                if errors:
+                    fprint(e, "ERROR", Fore.RED)
             return
 
         # LOGICAL SET
@@ -365,7 +380,8 @@ class LogicInterpreter(BaseInterpreter):
             return
 
         # Fallback unknown
-        fprint(s, "UNKNOWN", Fore.YELLOW)
+        if unknowns:
+            fprint(f"{s} (NO REGEX MATCH)", "UNKNOWN", Fore.YELLOW)
 
     def call_function(self, name, args):
         # Attempt to resolve a function in the Python context
@@ -375,9 +391,12 @@ class LogicInterpreter(BaseInterpreter):
             if callable(func):
                 return func(*args)
             else:
+                if errors:
+                    fprint(f"'{name}' is not callable", "ERROR", Fore.RED)
                 raise ValueError(f"'{name}' is not callable")
         except Exception as e:
-            fprint(f"Function call error: {e}", "ERROR", Fore.RED)
+            if errors:
+                fprint(f"Function call error: {e}", "ERROR", Fore.RED)
             return None
 
     def run(self, lines):
@@ -385,7 +404,7 @@ class LogicInterpreter(BaseInterpreter):
         for line in lines:
             self.linecount += 1
             self.python_context["linecount"] = self.linecount
-            #print(linecount)
+            self.linecount = self.python_context["linecount"]
             try:
                 self.run_line(line)
             except ReturnSignal as rs:
@@ -413,10 +432,12 @@ class CompoundInterpreter(BaseInterpreter):
             else:
                 fn = self.functions.get(name)
             if not fn:
-                fprint(f"function '{name}' not found", "ERROR", Fore.RED)
+                if errors:
+                    fprint(f"function '{name}' not found", "ERROR", Fore.RED)
                 return None
             if len(args) != len(fn['params']):
-                fprint(f"'{name}' expects {len(fn['params'])} args, got {len(args)}", "ERROR", Fore.RED)
+                if errors:
+                    fprint(f"'{name}' expects {len(fn['params'])} args, got {len(args)}", "ERROR", Fore.RED)
                 return None
             old_vars = self.logic_interp.vars.copy()
             old_params = self.logic_interp.current_params.copy()
@@ -442,11 +463,14 @@ class CompoundInterpreter(BaseInterpreter):
             return ret
 
     def run(self, lines):
+        global errors, unknowns
         current_fn = None
         current_cls = None
         linecount = 0
         for raw in lines:
             linecount += 1
+            self.python_context["linecount"] = linecount
+            linecount = self.python_context["linecount"]
             currentline = linecount
             line = raw.strip()
             if not line or line.startswith('comment'):
@@ -489,11 +513,34 @@ class CompoundInterpreter(BaseInterpreter):
             if m:
                 self.definitions[m.group(1)] = m.group(2).split()
                 continue
-            m = re.match(r'type\s+(\w+)\s+\(matches any in (\w+)\)', line)
+            # TYPE DEFINITION
+            m = re.match(r'^type\s+(\w+)\s*\((matches.+)\)$', line)
+            # print(line)
             if m:
-                name, src = m.groups()
-                self.types[name] = self.definitions.get(src, [])
+                typename, rulestr = m.groups()
+                self.types[typename] = rulestr.strip()
+                fprint(f"Registered type '{typename}' with rule: {rulestr}", "INFO", Fore.GREEN)
                 continue
+
+            # DISPLAY RULE
+            m = re.match(r'displayrule\s+(\w+)\s+(\w+)', line)
+            if m:
+                rule, conditions = m.groups()
+                if rule == "errors":
+                    if conditions == "disable":
+                        errors = False
+                    else:
+                        errors = True
+                elif rule == "unknowns":
+                    if conditions == "disable":
+                        unknowns = False
+                    else:
+                        unknowns = True
+                else:
+                    continue
+                continue
+
+
             m = re.match(r'fclass\s+(\w+)\s*{', line)
             if m:
                 current_cls = m.group(1)
@@ -550,6 +597,56 @@ class CompoundInterpreter(BaseInterpreter):
                 if ret is not None:
                     print(ret)
 
+    def match_type(self, value, typename):
+        rule = self.types.get(typename)
+        if not rule:
+            return False
+
+        # Preprocess type rule
+        rule = rule.strip().lower()
+
+        # Common type checks
+        if '0..9' in rule:
+            if re.fullmatch(r'\d+', str(value)):
+                return True
+
+        if 'float' in rule or '0..9.0..9' in rule:
+            if re.fullmatch(r'\d+\.\d+', str(value)):
+                return True
+
+        if '*reg' in rule and '\\w+' in rule:
+            if re.fullmatch(r'\w+', str(value)):
+                return True
+
+        if '*v' in rule and isinstance(value, str) and value in self.vars:
+            return True
+
+        if 'any in' in rule:
+            # Check if value is in a variable list like !hexbytes!
+            match = re.search(r'any in !(\w+)!', rule)
+            if match:
+                varname = match.group(1)
+                data = self.vars.get(varname)
+                if isinstance(data, list) and value in data:
+                    return True
+
+        if 'matches r[' in rule or 'matches z[' in rule:
+            if re.match(r'[rz]\[.*\]\[.*\]', str(value)):
+                return True
+
+        if 'matches {"*key", "*value"}' in rule:
+            if re.match(r'\{"\w+",\s*"\w+"\}', str(value)):
+                return True
+
+        if 'matches (*, *)' in rule:
+            if re.match(r'\(.*?,.*?\)', str(value)):
+                return True
+
+        if '*' in rule:  # Wildcard match
+            return True
+
+        return False
+
 
 def main():
     if len(sys.argv) < 1:
@@ -585,6 +682,8 @@ def main():
         with open(f"{basepath}/temp.pairs", "w") as _S:
             _S.write(f"rtid:{rtid} // ver:{__version__}~{__compat__}\n")
         for l in lines:
+            if l.startswith("clear"):
+                os.system("cls")
             text = ''
             with open(f"{basepath}/rt_temp.ltmp", "ab") as _L:
                 for char in l:
@@ -635,10 +734,10 @@ def main():
                     sys.exit(1)
                 with open(res_path, 'r', encoding='utf-8') as rf:
                     lines.extend(rf.readlines())
+            elif data == "run":
                 interpreter.run(lines)
             else:
                 lines.append(data)
-                interpreter.run(lines)
 
 if __name__ == "__main__":
     main()

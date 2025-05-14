@@ -1,13 +1,15 @@
 name test
 using resource asm
+comment wterm.cmd0(cls) comment clear screen after asm to prevent long error logs from asm being displayed
+reset.var(line)
 *FILETYPE logic
 printext(hereIsSomeText)
 __complex__(5)
-Math.add(10 5)
+general set variable result to Math.add(10 5)
 print variable result
-Math.mul(10 5)
+general set variable result to Math.mul(10 5)
 print variable result
-
+general set variable a to 1204
 
 Array.array(testarray)
 Array.arrayWrite(testarray 1 "datatext")
@@ -22,4 +24,8 @@ print variable result
 print text - - -
 py(print("hello"))
 cpu._flags.stflag(func0 true)
-comment wterm.cmd(cls)
+comment wterm.cmd0(cls)
+trace()
+general set variable result to getval(a)
+print variable result
+wterm.cmd2(timeout -t 5)
