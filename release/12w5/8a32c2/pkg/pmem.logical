@@ -1,0 +1,6 @@
+name pmem
+*FILETYPE compound
+function svmem (total available pct used free) {
+    print text param:total param:available param:pct param:used param:free
+}
+general set variable pmem to py:util.virtual_memory()

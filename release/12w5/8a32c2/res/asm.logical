@@ -31,7 +31,7 @@ type hex (matches any in hexbytes with any len)
 type text (matches any in textbytes with any len)
 type integer (matches 0..9 with len greater equal 1)
 type refdict (matches r[*][*], z[*][*] as series with any len)
-type array (matches *v *reg any "\w+_[0-9]+" with any len)
+type array (matches *v *reg any "\w+ _ [0-9]" with any len)
 type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
 type tuple (matches (*, *) where * any with any len)
 type word (matches *reg \w+ with len equal 4)
@@ -95,18 +95,6 @@ fclass Math {
     function div(a b) {
         return param:a / param:b
     }
-    function exp(x pwr) {
-        algebraic set variable solution to param:x ** param:pwr
-        return solution
-    }
-    function mod(a b) {
-        algebraic set variable solution to param:a % param:b
-        return solution
-    }
-    function floordiv(a b) {
-        algebraic set variable solution to param:a // param:b
-        return solution
-    }
 }
 
 fclass wterm {
@@ -115,15 +103,15 @@ fclass wterm {
     }
     function cmd1(x y) {
         Error.SystemError(InternalError)
-        py:os.system("param:x\x20param:y")
+        py:os.system("param:x param:y")
     }
     function cmd2(x y z) {
         Error.SystemError(InternalError)
-        py:os.system("param:x\x20param:y\x20param:z")
+        py:os.system("param:x param:y param:z")
     }
     function cmd3(x y z a) {
         Error.SystemError(InternalError)
-        py:os.system("param:x\x20param:y\x20param:z\x20param:a")
+        py:os.system("param:x param:y param:z param:a")
     }
 }
 

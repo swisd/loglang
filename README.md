@@ -88,7 +88,7 @@ read -p "Press Enter to continue..."
 |:--------------------------|:-------------:|-----------------------:|
 | Functions and Classes     |       C       |                   8a20 |
 | Advanced Functions        |      IP       |                   9a10 |
-| Arrays Fully Working      |      IP       |                   8a30 |
+| Arrays Fully Working      |       C       |                   8a30 |
 | Sets, Tuples, other types |      NS       |                   8a40 |
 | Multithreading, etc.      |      NS       |           10a or later |
 | Type Definitions          |      IP       |           10a or later |
@@ -272,16 +272,25 @@ print variable result
 
 Type definitions are not complete yet and are very complicated
 
+<!--
 The currently is not much documentation on this topic and it is in progress.
 Here is a sample to show you what they currently loook like, which will most likely be final.
+-->
 
+The syntax of a type definition is `type <type> (pattern)`
+
+For patterns, you start with `matches` to define what the type must match. 
+Ex: `matches <pattern> <defs>`. 
+You can also use `matches` to check through an array or `varInt`. Ex:`type data (matches any in textarray)` 
+
+Here is a snippet of the definitions in the `asm` resource
 ```
 comment Type definitions
 type hex (matches any in hexbytes with any len)
 type text (matches any in textbytes with any len)
 type integer (matches 0..9 with len greater equal 1)
 type refdict (matches r[*][*], z[*][*] as series with any len)
-type array (matches *v *reg any "\w+ _ [0-9]" with any len)
+type array (matches *v *reg any "\w+_[0-9+]" with any len)
 type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
 type tuple (matches (*, *) where * any with any len)
 type word (matches *reg \w+ with len equal 4)

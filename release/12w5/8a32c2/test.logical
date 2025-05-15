@@ -1,8 +1,8 @@
 name test
 using resource asm
-*FILETYPE logic
 comment wterm.cmd0(cls) comment clear screen after asm to prevent long error logs from asm being displayed
 reset.var(line)
+*FILETYPE logic
 printext(hereIsSomeText)
 __complex__(5)
 general set variable result to Math.add(10 5)

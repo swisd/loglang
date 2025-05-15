@@ -2,12 +2,13 @@ import colorama
 from colorama import Fore
 
 
-def fprint(text: object, aux: object, col: object) -> None:
+def fprint(text: object, aux: object, col: object, bck: object = '') -> None:
     """Print using color
+    :param bck:
     :param text
     :param aux
     :param col"""
-    print((f'{col}[{aux}] {text}{Fore.WHITE}' if aux != '' else f"{col}{text}{Fore.WHITE}"))
+    print((f'{col}{bck}[{aux}] {text}{Fore.WHITE}' if aux != '' else f"{col}{text}{Fore.WHITE}"))
 
 
 def fprint_s(text, aux, stat) -> None:

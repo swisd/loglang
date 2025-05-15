@@ -2,13 +2,11 @@ import re
 import sys
 import os
 import platform
-
-from sympy.strategies import condition
-
-from printmods import fprint, Fore
+from printmods import fprint, Fore, Back
 import printmods
 import math
 import psutil
+
 try:
     import cpuinfo
 
@@ -17,21 +15,38 @@ try:
             cpudata = item
 except:
     cpudata = "No Module 'py-cpuinfo'"
+
+
 __version__ = '8a32c0'
 __compat__ = '12w5-pre'
+
+
 from logdata import bytes_to_custom_pairs
 errors = True
 unknowns = True
 os.system('')
+
+
 print(f"Running on {Fore.CYAN}{platform.system()} {platform.release()} {Fore.YELLOW}{platform.version()}{Fore.RESET} // {Fore.GREEN}{platform.machine()}{Fore.RESET} ({Fore.BLUE}{platform.node()}{Fore.RESET}) // "
       f"\n{cpudata} \n"
       f"RAM: {round((psutil.virtual_memory().total)/1000000)} MB")
 print(f"Interpreter Version {__version__}-SP{__compat__}")
 if platform.system() == "Windows":
     os.system('')  # Enables ANSI escape codes
+
 import random
-basepath = sys.argv[0].removesuffix("interpreter.py")
+
+
+try:
+    basepath = os.path.dirname(os.path.abspath(sys.argv[0]))
+except Exception as e:
+    fprint(f"Failed to get the base interpreter path: {e} {Back.RESET}", "FATAL", Fore.BLACK, Back.WHITE)
+    _ = input("Press ENTER to exit.")
+    sys.exit(1)
+
+
 rtid = random.randrange(65536)
+print(f"RTID: {rtid}")
 
 class ReturnSignal(Exception):
     def __init__(self, value):
@@ -327,6 +342,7 @@ class LogicInterpreter(BaseInterpreter):
                     var, expr = m.groups()
                     try:
                         self.vars[var] = eval(expr, {}, self.vars)
+                        return
                     except Exception as e:
                         if errors:
                             fprint(f"evaluating '{expr}': {e}", "ERROR", Fore.RED)
@@ -670,9 +686,12 @@ def main():
                 res_path = os.path.join(directory_path, 'res', f'{name}.logical')
                 if not os.path.exists(res_path):
                     fprint(f"Resource not found: {res_path}", "ERROR", Fore.RED)
-                    sys.exit(1)
-                with open(res_path, 'r', encoding='utf-8') as rf:
-                    lines.extend(rf.readlines())
+                    fprint(f"Functions types or variables pulled from this source might not work or error. "
+                           f"\n...... Verify that the file exists and that the location and/or the path is correct.", "INFO", Fore.YELLOW)
+                    _ = input("Press ENTER to continue.")
+                else:
+                    with open(res_path, 'r', encoding='utf-8') as rf:
+                        lines.extend(rf.readlines())
             else:
                 lines.append(raw)
 

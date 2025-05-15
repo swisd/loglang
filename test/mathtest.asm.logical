@@ -1,0 +1,7 @@
+using resource asm
+name mathtest
+*FILETYPE logic
+
+Math.add(5 10)
+Math.mul(5 10)
+Math.exp(2 4)
