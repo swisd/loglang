@@ -3,6 +3,7 @@
 
 /build
 /dist
+/pytest
 
 # IntelliJ project files
 .idea

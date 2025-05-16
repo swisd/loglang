@@ -1,0 +1,9 @@
+name inputs
+*FILETYPE compound
+
+fclass inputs {
+    function prompt(text) {
+        input result param:text
+        return result
+    }
+}

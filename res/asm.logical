@@ -12,7 +12,7 @@ displayrule errors disable
 displayrule unknowns disable
 displayrule prints disable
 
-print text - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+print text "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 
 general set variable rtid to py:rtid
 general set variable _framework to nul
@@ -29,13 +29,30 @@ int loghexcompbytes def *t type *16 bytes / 00 01 02 03 04 05 06 07 08 09 0A 0B 
 comment Type definitions
 type hex (matches any in hexbytes with any len)
 type text (matches any in textbytes with any len)
-type integer (matches 0..9 with len greater equal 1)
-type refdict (matches r[*][*], z[*][*] as series with any len)
-type array (matches *v *reg any "\w+_[0-9]+" with any len)
-type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
-type tuple (matches (*, *) where * any with any len)
 type word (matches *reg \w+ with len equal 4)
+type chars (matches *reg \w+ with any len)
+type char (matches *reg \w+ with len equal 1)
+
 type float (matches 0..9.0..9)
+type integer (matches 0..9 with len greater equal 1)
+
+type array (matches *v *reg any "\w+_[0-9]+" with any len)
+type tuple (matches (*, *) where * any with any len)
+
+type refdict (matches r[*][*], z[*][*] as series with any len)
+type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
+
+type zset (matches *("*", *) where * any with len 2)
+
+type bytes (matches None) comment Not Yet Implemented
+type bytearray (matches None) comment Not Yet Implemented
+type memory (matches None) comment Get address of byte in memory
+
+type NoneType (matches None)
+
+type object (matches <*> where * any with any len) comment Not Yet Implemented
+
+
 
 comment function textcodec (data) {
 comment     ref mix *c compare hexbytes textbytes for 1 int hexbytes to 1 int textbytes until end both delta len 0 *r var out
@@ -79,7 +96,7 @@ fclass PyOp {
 }
 
 function printext(data) {
-    print text param:data
+    print text "param:data"
 }
 
 fclass Math {
@@ -106,6 +123,9 @@ fclass Math {
     function floordiv(a b) {
         algebraic set variable solution to param:a // param:b
         return solution
+    }
+    function abs(a) {
+        return param:a
     }
 }
 
@@ -188,95 +208,104 @@ fclass reset {
     }
 }
 
+
+function chr(x) {
+    return py:chr(param:x)
+}
+function ord(x) {
+    return py:ord("param:x")
+}
+
+
 fclass Error {
     function error(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ERROR: param:error
+        print text "[!rtid!:!linecount!] ERROR: param:error"
     }
     function GeneralError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ERROR: param:error
+        print text "[!rtid!:!linecount!] ERROR: param:error"
     }
     function OSError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] OSError: param:error
+        print text "[!rtid!:!linecount!] OSError: param:error"
     }
 
     function AttributeError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] AttributeError: param:error
+        print text "[!rtid!:!linecount!] AttributeError: param:error"
     }
     function ImportError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ImportError: param:error
+        print text "[!rtid!:!linecount!] ImportError: param:error"
     }
     function LookupError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] LookupError: param:error
+        print text "[!rtid!:!linecount!] LookupError: param:error"
     }
     function MemoryError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] MemoryError: param:error
+        print text "[!rtid!:!linecount!] MemoryError: param:error"
     }
     function ReferenceError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ReferenceError: param:error
+        print text "[!rtid!:!linecount!] ReferenceError: param:error"
     }
     function RuntimeError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] RuntimeError: param:error
+        print text "[!rtid!:!linecount!] RuntimeError: param:error"
     }
     function SyntaxError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] SyntaxError: param:error
+        print text "[!rtid!:!linecount!] SyntaxError: param:error"
     }
     function SystemError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] SystemError: param:error
+        print text "[!rtid!:!linecount!] SystemError: param:error"
     }
     function TypeError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] TypeError: param:error
+        print text "[!rtid!:!linecount!] TypeError: param:error"
     }
     function ValueError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ValueError: param:error
+        print text "[!rtid!:!linecount!] ValueError: param:error"
     }
     function OverflowError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] OverflowError: param:error
+        print text "[!rtid!:!linecount!] OverflowError: param:error"
     }
     function IndexError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] IndexError: param:error
+        print text "[!rtid!:!linecount!] IndexError: param:error"
     }
     function KeyError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] KeyError: param:error
+        print text "[!rtid!:!linecount!] KeyError: param:error"
     }
     function FileError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] FileError: param:error
+        print text "[!rtid!:!linecount!] FileError: param:error"
     }
     function PermissionError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] PermissionError: param:error
+        print text "[!rtid!:!linecount!] PermissionError: param:error"
     }
     function TimeoutError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] TimeoutError: param:error
+        print text "[!rtid!:!linecount!] TimeoutError: param:error"
     }
     function NotImplementedError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] NotImplementedError: param:error
+        print text "[!rtid!:!linecount!] NotImplementedError: param:error"
     }
     function RecursionError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] RecursionError: param:error
+        print text "[!rtid!:!linecount!] RecursionError: param:error"
     }
     function CriticalError(error) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] CriticalError: param:error
+        print text "[!rtid!:!linecount!] CriticalError: param:error"
     }
     function FatalError(error) {
         py:py(sys.exit(1))
@@ -285,23 +314,23 @@ fclass Error {
 fclass Warning {
     function Warning(warning) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] Warning: param:warning
+        print text "[!rtid!:!linecount!] Warning: param:warning"
     }
     function DeprecationWarning(warning) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] DeprecationWarning: param:warning
+        print text "[!rtid!:!linecount!] DeprecationWarning: param:warning"
     }
     function RuntimeWarning(warning) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] RuntimeWarning: param:warning
+        print text "[!rtid!:!linecount!] RuntimeWarning: param:warning"
     }
     function ImportWarning(warning) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ImportWarning: param:warning
+        print text "[!rtid!:!linecount!] ImportWarning: param:warning"
     }
     function ResourceWarning(warning) {
         general set variable linecount to py:linecount
-        print text [!rtid!:!linecount!] ResourceWarning: param:warning
+        print text "[!rtid!:!linecount!] ResourceWarning: param:warning"
     }
 }
 
@@ -386,7 +415,7 @@ fclass cpu {
     }
     fclass _flags {
         function stflag(flag data) {
-            print text set flag 'param:flag' to 'param:data'
+            print text "set flag 'param:flag' to 'param:data'"
         }
         function gtflag(flag) {
             Error.NotImplementedError(FunctionIsNotYetImplemented)
@@ -939,24 +968,24 @@ fclass base {
 }
 
 
-print text - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print text .
+print text "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+print text "."
 base.init()
 wterm.cmd0(cls) comment clear screen
-print text rtid: !rtid!
+print text "rtid: !rtid!"
 py:printmods.fprint("compile_complete","info",printmods.Fore.CYAN)
-print text .
+print text "."
 print text ASM Compile and Builtin Module (.logical)
-print text .
-print text to use:
-print text      using resource asm
-print text              OR
-print text     using package res.asm
-print text .
+print text "."
+print text "to use:"
+print text "     using resource asm"
+print text "             OR"
+print text "    using package res.asm"
+print text "."
 algebraic set variable linecount to 5 + py:linecount
-print text prog start lin !linecount!
-print text \/\/\/\/\/\/\/\/\/\/\/\/    exec    \/\/\/\/\/\/\/\/\/\/\/\/
+print text "prog start lin !linecount!"
+print text "\/\/\/\/\/\/\/\/\/\/\/\/    exec    \/\/\/\/\/\/\/\/\/\/\/\/"
 displayrule errors enable
 displayrule unknowns enable
-print text .
+print text "."
 py:linecount=0

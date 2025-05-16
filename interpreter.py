@@ -119,7 +119,9 @@ class LogicInterpreter(BaseInterpreter):
             "sys": sys,
             "os": os,
             "printmods": printmods,
-            "util": psutil
+            "util": psutil,
+            "chr": chr,
+            "ord": ord,
         }
         self.python_context["linecount"] = self.linecount
         self.python_context["py"] = self.eval_python  # Register py function globally
@@ -372,7 +374,7 @@ class LogicInterpreter(BaseInterpreter):
             return
 
         # IF statement
-        m = re.match(r'if variable (\w+) is (greater|less|equal) than variable (\w+) then (.+)', s)
+        m = re.match(r'if variable (\w+) is (greater|less|equal) than variable (\w+) then { (.+) }', s)
         if m:
             v1, cond, v2, rest = m.groups()
             a = self.vars.get(v1, 0)
@@ -383,7 +385,7 @@ class LogicInterpreter(BaseInterpreter):
             return
 
         # PRINT TEXT
-        m = re.match(r'print text (.+)', s)
+        m = re.match(r'print text "(.+)"', s)
         if m:
             txt = m.group(1)
             print() if txt.strip() == '.' else print(txt)
@@ -394,6 +396,14 @@ class LogicInterpreter(BaseInterpreter):
         if m:
             print(self.vars.get(m.group(1), ''))
             return
+
+        # INPUTS
+        #m = re.match(r'input (\w+) "(.+)"', s)
+        #if m:
+        #    var_expr, instring = m.groups()
+        #    val = input(instring)
+        #    self.vars[var_expr.strip()] = val
+        #    return
 
         # Fallback unknown
         if unknowns:
@@ -556,6 +566,12 @@ class CompoundInterpreter(BaseInterpreter):
                     continue
                 continue
 
+            m = re.match(r'input (\w+) "(.+)"', line)
+            if m:
+                var_expr, instring = m.groups()
+                val = input(instring)
+                self.logic_interp.vars[var_expr.strip()] = val
+                continue
 
             m = re.match(r'fclass\s+(\w+)\s*{', line)
             if m:
@@ -612,6 +628,11 @@ class CompoundInterpreter(BaseInterpreter):
                 ret = self.execute_function(nm, args_list)
                 if ret is not None:
                     print(ret)
+            m = re.match(r'input (\w+) "(.+)"', s)
+            if m:
+                var_expr, instring = m.groups()
+                val = input(instring)
+                self.logic_interp.vars[var_expr.strip()] = val
 
     def match_type(self, value, typename):
         rule = self.types.get(typename)
@@ -698,12 +719,17 @@ def main():
         mode = None
         with open(f"{basepath}/rt_temp.ltmp", "wb") as _L:
             _L.write(bytes(f"rtid:{rtid} // ver:{__version__}~{__compat__}\n", "utf-8"))
+        with open(f"{basepath}/nulled.ltmp", "wb") as _L:
+            _L.write(bytes(f"rtid:{rtid} // ver:{__version__}~{__compat__}\n", "utf-8"))
         with open(f"{basepath}/temp.pairs", "w") as _S:
             _S.write(f"rtid:{rtid} // ver:{__version__}~{__compat__}\n")
         for l in lines:
             if l.startswith("clear"):
                 os.system("cls")
             text = ''
+            with open(f"{basepath}/nulled.ltmp", "ab") as _L:
+                for char in l:
+                    _L.write(bytes(chr(ord(char) + ord(char)), "utf-8"))
             with open(f"{basepath}/rt_temp.ltmp", "ab") as _L:
                 for char in l:
                     _L.write(bytes(chr(ord(char) + 12), "utf-8"))
@@ -727,6 +753,10 @@ def main():
             with open(f"{basepath}/rt_temp.ltmp", "ab") as _L:
                 for char in line:
                     _L.write(bytes(chr(ord(char) + 12),"utf-8"))
+        for line in lines:
+            with open(f"{basepath}/nulled.ltmp", "ab") as _L:
+                for char in line:
+                    _L.write(bytes(chr(ord(char) + ord(char)),"utf-8"))
         interpreter.run(lines)
     else:
         if sys.argv[2] == "-logic":
@@ -753,7 +783,7 @@ def main():
                     sys.exit(1)
                 with open(res_path, 'r', encoding='utf-8') as rf:
                     lines.extend(rf.readlines())
-            elif data == "run":
+            elif data.startswith("run"):
                 interpreter.run(lines)
             else:
                 lines.append(data)

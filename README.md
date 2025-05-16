@@ -41,6 +41,9 @@ The simple logical language
 
 ## Description
 
+`LogicLang` is an attempt of making a language closer to being human readable than 
+machine readable. It is still constantly being updated. 
+
 ---
 
 ## Features
@@ -148,6 +151,10 @@ IF you want to print, you can use `print text`
 ```
 print text Hello World
 ```
+
+AS OF 8a32:
+
+`print text` requires the text to be a quoted string: `print text "hello world"`
 
 To assign variables, we will use `general set`, which will
 be used when we don't know what type something is.
@@ -299,8 +306,7 @@ type word (matches *reg \w+ with len equal 4)
 ### Input Processing
 
 ```
-input <prompt>
-print variable result
+input <variable> <prompt>
 ```
 
-**This does not work yet**
+Input will set the variable to what is inputted, with an optional prompt

@@ -13,15 +13,15 @@ general set variable a to 1204
 
 Array.array(testarray)
 Array.arrayWrite(testarray 1 "datatext")
-print text - - -
+print text "- - -"
 general set variable result to Array.arrayRead(testarray 0)
-print text Value 0 of array testarray
+print text "Value 0 of array testarray"
 print variable result
-print text - - -
+print text "- - -"
 general set variable result to Array.arrayRead(testarray 1)
-print text Value 1 of array testarray
+print text "Value 1 of array testarray"
 print variable result
-print text - - -
+print text "- - -"
 py(print("hello"))
 cpu._flags.stflag(func0 true)
 comment wterm.cmd0(cls)
@@ -29,3 +29,13 @@ trace()
 general set variable result to getval(a)
 print variable result
 wterm.cmd2(timeout -t 5)
+print text "- - - - -"
+ord(*)
+chr(42)
+print text "- - - - -"
+chr(36)
+input txt "$ "
+general set variable numbered to ord(!txt!)
+general set variable letter to chr(!numbered!)
+print text "DEC: !numbered!"
+print text "ASCII: !letter!"

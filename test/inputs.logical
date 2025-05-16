@@ -1,0 +1,8 @@
+name inputs test module
+*FILETYPE compound
+function generalInput() {
+    input result "input something... "
+    return result
+}
+general set variable text to generalInput()
+print variable text
