@@ -1,11 +1,15 @@
-import re
-import sys
-import os
-import platform
-from printmods import fprint, Fore, Back
-import printmods
-import math
-import psutil
+try:
+    import re
+    import sys
+    import os
+    import platform
+    from printmods import fprint, Fore, Back
+    import printmods
+    import math
+    import psutil
+except Exception as e:
+    print(f"EXCEPTION DURING IMPORT {e}")
+    _ = input("PRESS ENTER TO CONTINUE")
 
 try:
     import cpuinfo
@@ -17,22 +21,26 @@ except:
     cpudata = "No Module 'py-cpuinfo'"
 
 
-__version__ = '8a32c0'
-__compat__ = '12w5-pre'
+__version__: str = '8a32c0'
+__compat__: str = '12w5-pre'
 
 
 from logdata import bytes_to_custom_pairs
-errors = True
-unknowns = True
+
+errors: bool = True
+unknowns: bool = True
+
 os.system('')
 
+def sysdata():
+    print(f"Running on {Fore.CYAN}{platform.system()} {platform.release()} {Fore.YELLOW}{platform.version()}{Fore.RESET} // {Fore.GREEN}{platform.machine()}{Fore.RESET} ({Fore.BLUE}{platform.node()}{Fore.RESET}) // "
+          f"\n{cpudata} \n"
+          f"RAM: {round((psutil.virtual_memory().total)/1000000)} MB")
+    print(f"Interpreter Version {__version__}-SP{__compat__}")
 
-print(f"Running on {Fore.CYAN}{platform.system()} {platform.release()} {Fore.YELLOW}{platform.version()}{Fore.RESET} // {Fore.GREEN}{platform.machine()}{Fore.RESET} ({Fore.BLUE}{platform.node()}{Fore.RESET}) // "
-      f"\n{cpudata} \n"
-      f"RAM: {round((psutil.virtual_memory().total)/1000000)} MB")
-print(f"Interpreter Version {__version__}-SP{__compat__}")
-if platform.system() == "Windows":
-    os.system('')  # Enables ANSI escape codes
+def initcols():
+    if platform.system() == "Windows":
+        os.system('')  # Enables ANSI escape codes
 
 import random
 
@@ -688,6 +696,7 @@ class CompoundInterpreter(BaseInterpreter):
 
 
 def main():
+    sysdata()
     if len(sys.argv) < 1:
         print("Usage: python interpreter.py <file_path> <options>")
         sys.exit(0)
