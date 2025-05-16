@@ -312,4 +312,8 @@ type word (matches *reg \w+ with len equal 4)
 input <variable> <prompt>
 ```
 
-Input will set the variable to what is inputted, with an optional prompt
+Input will set the variable to what is inputted, with an optional prompt.
+
+** As of now, if you use `asm` or are using a compound filetype, it will ask for an 
+input during compile. Just hit enter to continue past, and your desired input will 
+work during the code execution (it will ask you again).
