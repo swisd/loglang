@@ -111,7 +111,7 @@ class LogicInterpreter(BaseInterpreter):
         self.types = {}
         self.linecount = 0
         self.python_context = {
-            **vars(math),
+            "MVAR": vars(math),
             "__builtins__": __builtins__,
             "rtid": rtid,
             "linecount": self.linecount,
@@ -122,6 +122,8 @@ class LogicInterpreter(BaseInterpreter):
             "util": psutil,
             "chr": chr,
             "ord": ord,
+            "self": self,
+            "bin": bin,
         }
         self.python_context["linecount"] = self.linecount
         self.python_context["py"] = self.eval_python  # Register py function globally

@@ -34,7 +34,7 @@ ord(*)
 chr(42)
 print text "- - - - -"
 chr(36)
-input txt "$ "
+input txt "Input any ascii character $ "
 general set variable numbered to ord(!txt!)
 general set variable letter to chr(!numbered!)
 print text "DEC: !numbered!"
