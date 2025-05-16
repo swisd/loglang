@@ -171,6 +171,9 @@ general set variable b to !a!
 print variable b
 ```
 
+**IF you want to include spaces, you must use \x20**
+
+
 #### Other set types
 
 there are other set types for other applications that include:
