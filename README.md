@@ -16,7 +16,7 @@ The simple logical language
   * [Table of Contents](#table-of-contents)
   * [Description](#description)
   * [Features](#features)
-  * [Setup](#setup)
+  * [Setup and Usage](#setup-and-usage)
   * [Limitations](#limitations)
   * [Planned Updates](#planned-updates)
   * [Screenshots](#screenshots)
@@ -50,7 +50,7 @@ machine readable. It is still constantly being updated.
 
 ---
 
-## Setup
+## Setup and Usage
 
 You must have Python 3.9.0 or later installed. (Python 3.12 recommended)
 
