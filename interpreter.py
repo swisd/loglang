@@ -284,7 +284,8 @@ class LogicInterpreter(BaseInterpreter):
             call = re.match(r'(\w+(?:\.\w+)*)\((.*?)\)$', expr)
             if call:
                 fn_name, arg_str = call.groups()
-                args = [self.expand_vars(a) for a in arg_str.split()]
+                args = re.findall(r'(?:[^\s"]+|"[^"]*")+', arg_str)
+                args = [self.expand_vars(arg.strip('"')) for arg in args]
                 val = self.call_function(fn_name, args)
             else:
                 expanded = self.expand_vars(expr)
@@ -312,7 +313,8 @@ class LogicInterpreter(BaseInterpreter):
                 call = re.match(r'(\w+(?:\.\w+)*)\((.*?)\)$', expr)
                 if call:
                     fn_name, arg_str = call.groups()
-                    args_list = [self.expand_vars(a) for a in arg_str.split()]
+                    args_list = re.findall(r'(?:[^\s"]+|"[^"]*")+', arg_str)
+                    args_list = [self.expand_vars(arg.strip('"')) for arg in args_list]
                     val = self.call_function(fn_name, args_list)
                 else:
                     val_str = self.expand_vars(expr)
@@ -347,7 +349,8 @@ class LogicInterpreter(BaseInterpreter):
                 call = re.match(r'(\w+(?:\.\w+)*)\((.*?)\)$', expr)
                 if call:
                     fn_name, arg_str = call.groups()
-                    args_list = [self.expand_vars(a) for a in arg_str.split()]
+                    args_list = re.findall(r'(?:[^\s"]+|"[^"]*")+', arg_str)
+                    args_list = [self.expand_vars(arg.strip('"')) for arg in args_list]
                     val = self.call_function(fn_name, args_list)
                 else:
                     to_eval = self.expand_vars(expr)
@@ -408,12 +411,12 @@ class LogicInterpreter(BaseInterpreter):
             return
 
         # INPUTS
-        #m = re.match(r'input (\w+) "(.+)"', s)
-        #if m:
-        #    var_expr, instring = m.groups()
-        #    val = input(instring)
-        #    self.vars[var_expr.strip()] = val
-        #    return
+        m = re.match(r'input (\w+) "(.+)"', s)
+        if m:
+            var_expr, instring = m.groups()
+            val = input(instring)
+            self.vars[var_expr.strip()] = val
+            return
 
         # Fallback unknown
         if unknowns:
@@ -486,7 +489,8 @@ class CompoundInterpreter(BaseInterpreter):
                     m = re.match(r'(\w+(?:\.\w+)*)\((.*?)\)', s)
                     if m:
                         nm, ag = m.groups()
-                        args_list = [self.logic_interp.expand_vars(a) for a in ag.split()]
+                        args_list = re.findall(r'(?:[^\s"]+|"[^"]*")+', ag)
+                        args_list = [self.logic_interp.expand_vars(arg.strip('"')) for arg in args_list]
                         self.execute_function(nm, args_list)
                     else:
                         self.logic_interp.run_line(s)
@@ -634,7 +638,8 @@ class CompoundInterpreter(BaseInterpreter):
             m = re.match(r'(\w+(?:\.\w+)*)\((.*?)\)', s)
             if m:
                 nm, ag = m.groups()
-                args_list = [self.logic_interp.expand_vars(a) for a in ag.split()]
+                args_list = re.findall(r'(?:[^\s"]+|"[^"]*")+', ag)
+                args_list = [self.logic_interp.expand_vars(arg.strip('"')) for arg in args_list]
                 ret = self.execute_function(nm, args_list)
                 if ret is not None:
                     print(ret)

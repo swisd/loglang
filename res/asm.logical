@@ -983,7 +983,7 @@ wterm.cmd0(cls) comment clear screen
 print text "rtid: !rtid!"
 py:printmods.fprint("compile_complete","info",printmods.Fore.CYAN)
 print text "."
-print text ASM Compile and Builtin Module (.logical)
+print text "ASM Compile and Builtin Module (.logical)"
 print text "."
 print text "to use:"
 print text "     using resource asm"

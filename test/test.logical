@@ -3,7 +3,7 @@ using resource asm
 *FILETYPE logic
 comment wterm.cmd0(cls) comment clear screen after asm to prevent long error logs from asm being displayed
 reset.var(line)
-printext(hereIsSomeText)
+printext("here Is Some Text")
 __complex__(5)
 general set variable result to Math.add(10 5)
 print variable result
