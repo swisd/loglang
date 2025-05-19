@@ -1,3 +1,4 @@
+from pip._vendor.rich import progress
 try:
     import re
     import sys
@@ -733,6 +734,7 @@ def main():
                 lines.append(raw)
 
         mode = None
+
         with open(f"{basepath}/rt_temp.ltmp", "wb") as _L:
             _L.write(bytes(f"rtid:{rtid} // ver:{__version__}~{__compat__}\n", "utf-8"))
         with open(f"{basepath}/nulled.ltmp", "wb") as _L:
@@ -752,6 +754,7 @@ def main():
                     text += bytes_to_custom_pairs(bytes(char, "utf-8"), " ") + " "
             with open(f"{basepath}/temp.pairs", "a") as _S:
                 _S.write(text)
+
             linecount += 1
             currentline = linecount
             if l.strip().startswith('*FILETYPE'):
@@ -774,14 +777,23 @@ def main():
                 for char in line:
                     _L.write(bytes(chr(ord(char) + ord(char)),"utf-8"))
         interpreter.run(lines)
+        file_path_1 = os.path.abspath(sys.argv[1])  # Get the absolute path of the current file
+        directory_path_1 = os.path.dirname(file_path_1)
+        file_name_1 = (file_path_1.removeprefix(directory_path_1)).removesuffix(".logical")
+        with open(f"{basepath}/compiled/{file_name_1.encode('utf-8').hex()}.logxcomp", "wb") as _S:
+            with open(f"{basepath}/rt_temp.ltmp", "rb") as _L:
+                _S.write(_L.read())
     else:
         if sys.argv[2] == "-logic":
             interpreter = LogicInterpreter()
         if sys.argv[2] == "-compound":
             interpreter = LogicInterpreter()
+        lines = []
         while True:
-            lines = []
             data = input(">> ")
+            if data == "run":
+                interpreter.run(lines)
+                lines = []
             if data == "help":
                 with open(f"{basepath}/helpfile", "r") as _f:
                     print(_f.read())
@@ -789,6 +801,8 @@ def main():
                 os.system("cls")
             elif data == "env":
                 os.system("set")
+            elif data == "clearlines":
+                lines = []
             elif data.startswith("using"):
                 name = data.split(' ')[2]
                 file_path = os.path.abspath(__file__)  # Get the absolute path of the current file
@@ -799,10 +813,10 @@ def main():
                     sys.exit(1)
                 with open(res_path, 'r', encoding='utf-8') as rf:
                     lines.extend(rf.readlines())
-            elif data.startswith("run"):
-                interpreter.run(lines)
+
             else:
                 lines.append(data)
+
 
 if __name__ == "__main__":
     main()

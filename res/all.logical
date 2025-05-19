@@ -1,0 +1,4 @@
+name all
+*FILETYPE compound
+using resource asm
+using package pmem
