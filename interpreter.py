@@ -133,6 +133,7 @@ class LogicInterpreter(BaseInterpreter):
             "ord": ord,
             "self": self,
             "bin": bin,
+            "hex": hex
         }
         self.python_context["linecount"] = self.linecount
         self.python_context["py"] = self.eval_python  # Register py function globally

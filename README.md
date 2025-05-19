@@ -317,3 +317,75 @@ Input will set the variable to what is inputted, with an optional prompt.
 ** As of now, if you use `asm` or are using a compound filetype, it will ask for an 
 input during compile. Just hit enter to continue past, and your desired input will 
 work during the code execution (it will ask you again).
+
+
+### Entrypoints and Reruns
+**These functions are still in development**
+
+
+#### Entrypoint
+
+`run` or `run <line>`
+
+#### Rerun
+
+A rerun will restart the execution of the current program, pulling from `rt_temp.ltmp` and `temp.pairs`
+A rerun will also use the same RTID, so RTID-based randomization will not work 
+
+Usage:
+`rerun`
+
+
+### Pulling from python
+
+To get a variable or function, use the `py:` prefix
+
+To got the RTID use:
+
+`general set rtid to py:rtid`
+
+
+List of functions and variables:
+
+
+
+
+| Name          | Type    | Python Equivalent  |
+|:--------------|:--------|:-------------------|
+| `rtid`        | var     | `rtid`             |
+| `self`        | cls     | `self`             |
+| `linecount`   | var     | `self.linecount`   |
+| `vars`        | list    | `self.vars`        |
+| `sys`         | mod     | `sys`              |
+| `os`          | mod     | `os`               |
+| `printmods`   | mod     | `printmods`        |
+| `util`        | mod     | `psutil`           |
+| `chr`         | func    | `chr()`            |
+| `ord`         | func    | `ord()`            |
+| `bin`         | func    | `bin()`            |
+| `hex`         | func    | `hex()`            |
+| `MVAR`        | funcval | `vars(math)`       |
+
+
+
+
+
+
+```python
+self.python_context = {
+            "MVAR": vars(math),
+            "__builtins__": __builtins__,
+            "rtid": rtid,
+            "linecount": self.linecount,
+            "vars": self.vars,
+            "sys": sys,
+            "os": os,
+            "printmods": printmods,
+            "util": psutil,
+            "chr": chr,
+            "ord": ord,
+            "self": self,
+            "bin": bin,
+            "hex": hex
+        }
+```
