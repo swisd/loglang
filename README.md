@@ -298,12 +298,29 @@ Here is a snippet of the definitions in the `asm` resource
 comment Type definitions
 type hex (matches any in hexbytes with any len)
 type text (matches any in textbytes with any len)
+type word (matches *reg "\w+" with len equal 4)
+type chars (matches *reg "\w+" with any len)
+type char (matches *reg "\w+" with len equal 1)
+
+type float (matches 0..9.0..9)
 type integer (matches 0..9 with len greater equal 1)
-type refdict (matches r[*][*], z[*][*] as series with any len)
-type array (matches *v *reg any "\w+_[0-9+]" with any len)
-type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
+type precision (matches *reg "([0-9]*).([0-9]*))" with len greater 2)
+
+type array (matches *v *reg any "\w+_[0-9]+" with any len)
 type tuple (matches (*, *) where * any with any len)
-type word (matches *reg \w+ with len equal 4)
+
+type refdict (matches r[*][*], z[*][*] as series with any len)
+type keydict (matches {"*key", "*value"} any where both *\w+ any with any len) comment might need improvement
+
+type zset (matches *("*", *) where * any with len 2)
+
+type bytes (matches None) comment Not Yet Implemented
+type bytearray (matches None) comment Not Yet Implemented
+type memory (matches None) comment Get address of byte in memory
+
+type NoneType (matches None)
+
+type object (matches <*> where * any with any len) comment Not Yet Implemented
 ```
 
 ### Input Processing
