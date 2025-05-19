@@ -367,10 +367,6 @@ List of functions and variables:
 | `MVAR`        | funcval | `vars(math)`       |
 
 
-
-
-
-
 ```python
 self.python_context = {
             "MVAR": vars(math),
@@ -389,3 +385,14 @@ self.python_context = {
             "hex": hex
         }
 ```
+
+
+
+
+- [x] one
+- [ ] two
+- [x] three
+
+<footer>
+  <p> &copy;  N<sup>12</sup> 2025 </p>
+</footer>
