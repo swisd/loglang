@@ -4,6 +4,7 @@
 /build
 /dist
 /pytest
+/nvar
 
 # IntelliJ project files
 .idea
