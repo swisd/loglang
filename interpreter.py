@@ -656,7 +656,7 @@ class CompoundInterpreter(BaseInterpreter):
             s = raw.strip()
             if any(s.startswith(pref) for pref in (
                     'general set', 'algebraic set', 'logical set',
-                    'logical compare', 'print text', 'print variable', 'if variable'
+                    'logical compare', 'print text', 'print variable', 'if'
             )):
                 self.logic_interp.run_line(s)
                 continue
