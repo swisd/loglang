@@ -34,12 +34,13 @@ int loghexcompbytes def *t type *16 bytes / 00 01 02 03 04 05 06 07 08 09 0A 0B 
 comment Type definitions
 type hex (matches any in hexbytes with any len)
 type text (matches any in textbytes with any len)
-type word (matches *reg \w+ with len equal 4)
-type chars (matches *reg \w+ with any len)
-type char (matches *reg \w+ with len equal 1)
+type word (matches *reg "\w+" with len equal 4)
+type chars (matches *reg "\w+" with any len)
+type char (matches *reg "\w+" with len equal 1)
 
 type float (matches 0..9.0..9)
 type integer (matches 0..9 with len greater equal 1)
+type precision (matches *reg "([0-9]*).([0-9]*))" with len greater 2)
 
 type array (matches *v *reg any "\w+_[0-9]+" with any len)
 type tuple (matches (*, *) where * any with any len)
@@ -56,6 +57,29 @@ type memory (matches None) comment Get address of byte in memory
 type NoneType (matches None)
 
 type object (matches <*> where * any with any len) comment Not Yet Implemented
+
+
+type vec2 (matches None)
+type vec3 (matches None)
+type vec4 (matches None)
+type mat2 (matches None)
+type ivec2 (matches None)
+type ivec3 (matches None)
+type ivec4 (matches None)
+type bvec2 (matches None)
+type bvec3 (matches None)
+type bvec4 (matches None)
+
+type uniform (matches None)
+type linear (matches None)
+type constant (matches None)
+
+type signed (matches None)
+type unsigned (matches None)
+
+type void (matches v(*) where * any with any len)
+type nul (matches NoneType)
+
 
 
 
@@ -134,6 +158,26 @@ fclass Math {
     }
 }
 
+fclass dmath {
+    function vec2(a b){
+        return None
+    }
+    function vec3(a b){
+        return None
+    }
+    function vec4(a b){
+        return None
+    }
+    function mat2(a b){
+        return None
+    }
+    function mat3(a b){
+        return None
+    }
+
+}
+
+
 fclass wterm {
     function cmd0(x) {
         py:os.system("param:x")
@@ -185,22 +229,22 @@ fclass flags {
         return fmtout
     }
     function isolated() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function debug() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function inspect() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function hash() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 }
 
 fclass disk {
     function seek(f x cylinder sector track platter r2 vel) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 }
 
@@ -221,7 +265,10 @@ function ord(x) {
     return py:ord("param:x")
 }
 function bin(x) {
-    return py:bin(x)
+    return py:bin(param:x)
+}
+function hex(x) {            comment hex() gives us the decimal value for some reason
+    return py:hex(param:x)
 }
 
 fclass Error {
@@ -344,72 +391,72 @@ fclass Warning {
 
 fclass comp {
     function node() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
     function uNode() {
         comment Unified node
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 }
 
 fclass system {
     function mode() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function ino() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function dev() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function nlink() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function uid() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function gid() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function size() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function atime() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function mtime() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function blocks() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function blksize() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function rdev() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 }
 
 fclass fs {
     function open(path flags mode f) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function pipe(i o) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function read(f length) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function close(f) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function dev_encoding(f) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function fdopen(f mode buf enc err nl cl opn)
     function write(f data) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function access(path mode f eff_id sym_f)
     function seek(f position whence)
@@ -425,304 +472,304 @@ fclass cpu {
             print text "set flag 'param:flag' to 'param:data'"
         }
         function gtflag(flag) {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function debug() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function inspect() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function interactive() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function optimize() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function ignore_env() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function verbose() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function bytes_warning() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function quiet() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function hash_randomization() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function isolated() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function dev_mode() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function utf8_mode() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     fclass _float {
         function max() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function max_exp() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function max_10_exp() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function min() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function min_exp() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function min_10_exp() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function dig() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function mant_dig() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function epsilon() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function radix() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function rounds() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     fclass _hash {
         function width() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function modulus() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function inf() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function nan() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function imag() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function algorithm() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function hash_bits() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function seed_bits() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function cutoff() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     fclass _int {
         function bits_per_digit() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function sizeof_digit() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function default_max_str_digits() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function str_digits_check_threshold() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     fclass _thread {
         function name() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function lock() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function version
     }
     fclass _version {
         function major() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function minor() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function micro() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function releaselevel() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function serial() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     function call_tracing(func args) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function exit(status) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getfsencoding() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getfscde() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getrefcount(object) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getrecursionlimit() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getsizeof(obj) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getswitchinterval() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getprofile() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function setprofile(function) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function gettrace() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function settrace(function) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     fclass _WinVer {
         function major() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function minor() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function build() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function platform() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function service_pack() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function service_pack_minor() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function service_pack_major() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function suite_mask() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function product_type() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function platform_version() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     function getwindowsversion() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function intern(string) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function is_finalizing() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function breakpointhook(args kwargs) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function setdlopenflags(flags) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function setrecursionlimit(limit) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function setswitchinterval(interval) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function gettotalrefcount() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getcheckinterval() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function setcheckinterval(n) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function callstats() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function unraisablehook(unraisable) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function addaudithook(hook) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function audit(event args) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     fclass _asyncgen_hooks {
         function firstiter() {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
         function finalizer() {
-             Error.NotImplementedError(FunctionIsNotYetImplemented)
+             Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
     function get_asyncgen_hooks() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function set_asyncgen_hooks(firtsiter finlizer) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function _enablelegacywindowsfsencoding() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function get_coroutine_origin_tracking_depth() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function set_coroutine_origin_tracking_depth(depth) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function set_int_max_str_digits(maxdigits) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function get_int_max_str_digits() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function getunicodeinternedsize(* _only) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function deactivate_stack_trampoline() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function stack_trampoline_active() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
     function activate_stack_trampoline(backend) {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     fclass _dsk {
         function seek(f x cylinder sector track platter r2 vel) {
-            Error.NotImplementedError(FunctionIsNotYetImplemented)
+            Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
         }
     }
 
@@ -730,15 +777,15 @@ fclass cpu {
 
 
 function IOControl() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function keyTrack() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function trace() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 
@@ -812,21 +859,21 @@ function _arrayRShift(array){
 }
 
 function barrier() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function lock() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function manager() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function pipe() {
 
 function pool() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function queue(qname op data loc) {
@@ -844,23 +891,23 @@ function stack(id op data) {
 }
 
 function fileOpen(path mode) {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function fileRead(fileOpenObj) {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function fileWrite(fileOpenObj) {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function __init__() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function __call__() {
-    Error.NotImplementedError(FunctionIsNotYetImplemented)
+    Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
 }
 
 function __complex__(number) {
@@ -869,67 +916,67 @@ function __complex__(number) {
 
 fclass memory {
     function format() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function contiguous() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function itemsize() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function nbytes() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function ndim() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function obj() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function readonly() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function shape() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function strides() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function suboffsets() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function cast() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function hexadec(){
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function release() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function tobytes() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function toarray() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
     function toreadonly() {
-        Error.NotImplementedError(FunctionIsNotYetImplemented)
+        Error.NotImplementedError("This function has not been implemented yet and therefore is deprecated")
     }
 
 }

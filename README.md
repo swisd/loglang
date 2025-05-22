@@ -202,7 +202,11 @@ print variable result
 
 You can use if statements to make a comparison, and the format is pretty simple
 
-`if variable a is (greater|less|equal) than variable a then ...`
+`if variable a is (greater|less|equal) than variable a then { ... }`
+
+If statements also support more compairisons
+
+`if !b! < !a! then { print text "!a! is greater than !b!" }`
 
 ### For loops
 

@@ -43,6 +43,7 @@ print text "Not Of Previous Result (h)"
 print variable i
 print text "."
 general set variable a to 15
-if variable !a! is greater than variable !b! then algebraic set variable z to a + b
-print variable z
+if variable a is greater than variable b then { algebraic set variable z to a + b }
+if !b! < !a! then { print text "!a! is greater than !b!" }
+print text "Variable z is !z!"
 

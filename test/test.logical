@@ -9,6 +9,8 @@ general set variable result to Math.add(10 5)
 print variable result
 general set variable result to Math.mul(10 5)
 print variable result
+general set variable result to Math.exp(2 4)
+print variable result
 general set variable a to 1204
 
 Array.array(testarray)
@@ -37,5 +39,19 @@ chr(36)
 input txt "Input any ascii character $ "
 general set variable numbered to ord(!txt!)
 general set variable letter to chr(!numbered!)
+comment Hex gives us decimal value for some reason
+general set variable hexnum to hex(!numbered!)
 print text "DEC: !numbered!"
 print text "ASCII: !letter!"
+print text "HEX: !hexnum!"
+
+
+input val1 "Input value one (int): "
+input val2 "Input value two (int): "
+
+
+if variable val1 is greater than variable val2 then { print text "value one is greater than value two" }
+if variable val1 is equal than variable val2 then { print text "value one is equal than value two" }
+if variable val1 is less than variable val2 then { print text "value one is less than value two" }
+
+

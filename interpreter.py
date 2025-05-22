@@ -388,13 +388,32 @@ class LogicInterpreter(BaseInterpreter):
             self.vars[out] = res
             return
 
-        # IF statement
+        # IF variable statement
         m = re.match(r'if variable (\w+) is (greater|less|equal) than variable (\w+) then { (.+) }', s)
         if m:
             v1, cond, v2, rest = m.groups()
             a = self.vars.get(v1, 0)
             b = self.vars.get(v2, 0)
             cmp_map = {'greater': a > b, 'less': a < b, 'equal': a == b}
+            if cmp_map.get(cond):
+                self.run_line(rest)
+            return
+        # IF statement
+        m = re.match(r'if (\w+) (==|>=|>|<|!=) (\w+) then { (.+) }', s)
+        if m:
+            v1, cond, v2, rest = m.groups()
+            #a = self.vars.get(v1, 0)
+            #b = self.vars.get(v2, 0)
+            a = v1
+            b = v2
+            cmp_map = {
+                '>': a > b,
+                '<': a < b,
+                '==': a == b,
+                '<=': a <= b,
+                '>=': a >= b,
+                "!=": a != b
+            }
             if cmp_map.get(cond):
                 self.run_line(rest)
             return
@@ -609,6 +628,10 @@ class CompoundInterpreter(BaseInterpreter):
                 continue
             if current_fn:
                 current_fn['body'].append(line)
+            m = re.match(r'condition (.+) {(.+)}', line)
+            if m:
+                name, then = m.groups()
+
         # Summary dump
         if self.do_dump:
             fprint(self.filetype, "MODE", Fore.BLUE)
