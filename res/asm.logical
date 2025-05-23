@@ -85,11 +85,11 @@ type nul (matches NoneType)
 
 comment function textcodec (data) {
 comment     ref mix *c compare hexbytes textbytes for 1 int hexbytes to 1 int textbytes until end both delta len 0 *r var out
-comment     if data equal type.hex {
-comment         for ref in out if data equal ref [0] return ref[1]
+comment     if data == type.hex then {
+comment         for ref in out if !data! == ref[0] then { return ref[1] }
 comment     }
-comment     if data equal type.text {
-comment         for ref in out if data equal ref [1] return ref[0]
+comment     if data equal type.text then {
+comment         for ref in out if !data! == ref[1] then { return ref[0] }
 comment     }
 comment }
 
@@ -253,7 +253,7 @@ fclass reset {
         Error.error(Incorrrect)
         return None
         general set variable compared to line
-        if param:name is equal than !compared! then py:linecount=0
+        if param:name == !compared! then { py:linecount=0 }
     }
 }
 
@@ -877,17 +877,17 @@ function pool() {
 }
 
 function queue(qname op data loc) {
-    if param:op equal "n" { Array.array(param:qname) }
-    if param:op equal "a" { Array.arrayAppend(param:qname param:data) }
-    if param:op equal "t" { return Array.arrayRead(param:qname 0) }
-    if param:op equal "r" { return Array.arrayRemove(param:qname param:loc) }
+    if param:op == "n" then { Array.array(param:qname) }
+    if param:op == "a" then { Array.arrayAppend(param:qname param:data) }
+    if param:op == "t" then { return Array.arrayRead(param:qname 0) }
+    if param:op == "r" then { return Array.arrayRemove(param:qname param:loc) }
 }
 
 function stack(id op data) {
     general set variable name to STACK!param:id!
-    if param:op equal 2 { Array.array(!name!) }
-    if param:op equal 0 { Array.arrayAppend(!name! param:data) }
-    if param:op equal 1 { return Array.arrayRead(!name! 0) then arrayRShift(!name!) }
+    if param:op == 2 then { Array.array(!name!) }
+    if param:op == 0 then { Array.arrayAppend(!name! param:data) }
+    if param:op == 1 then { return Array.arrayRead(!name! 0) then arrayRShift(!name!) }
 }
 
 function fileOpen(path mode) {
@@ -1001,17 +1001,17 @@ general set variable _P to TypeVar(_P)
 
 fclass codec {
     function textcodec(data) {
-        ref mix *c compare hexbytes textbytes for 1 in hexbytes to 1 in textbytes until end both delta len 0 *r var out
-        if param:data equal type.hex { for ref in out if param:data equal ref[0] return ref[1] }
-        if param:data equal type.text { for ref in out if param:data equal ref[1] return ref[0] }
-        if param:data not equal type.hex and param:data not equal type.text { raise Error.error("Incorrect type for function") }
+        ref mix *c compare hexbytes to textbytes for 1 in hexbytes to 1 in textbytes until end both delta len 0 *r var out
+        if param:data == type.hex then{ for ref in out { if param:data == !ref[0]! then { return ref[1] } } }
+        if param:data == type.text then { for ref in out { if param:data == !ref[1]! then { return ref[0] } } }
+        if param:data != type.hex then { if param:data != type.text then { raise Error.error("Incorrect type for function") } }
     }
 
     function compilecodec(data) {
-        ref mix *c compare logwords loghexcompbytes for 1 in logwords to 1 in loghexcompbytes until end both delta len 0 *r var out
-        if param:data equal type.hex { for ref in out if param:data equal ref[1] return ref[0] }
-        if param:data equal type.text { for ref in out if param:data equal ref[0] return ref[1] }
-        if param:data not equal type.hex and param:data not equal type.text { raise Error.error("Incorrect type for function") }
+        ref mix *c compare logwords to loghexcompbytes for 1 in logwords to 1 in loghexcompbytes until end both delta len 0 *r var out
+        if param:data == type.hex then { for ref in out { if param:data == !ref[1]! then { return ref[0] } } }
+        if param:data == type.text then { for ref in out { if param:data == !ref[0]! then { return ref[1] } } }
+        if param:data != type.hex then { if param:data != type.text then { raise Error.error("Incorrect type for function") } }
     }
 }
 
