@@ -2,6 +2,7 @@
 
 The simple logical language
 
+> yes, I know the repo name is wrong
 ---
 
 ## Overview
