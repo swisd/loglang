@@ -3,6 +3,10 @@
 The simple logical language
 
 > yes, I know the repo name is wrong
+
+> [!WARNING]
+> This repo is in a slow update state. Updates will be very infrequent. 
+
 ---
 
 ## Overview
